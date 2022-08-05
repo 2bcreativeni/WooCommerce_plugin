@@ -289,8 +289,10 @@ class BOIPA extends WC_Payment_Gateway {
                 $mmb_message = get_post_meta($order_id, '_mmb_gateway_message', true);
 
                 if (!empty($mmb_message)) {
-                    $message = $mmb_message['message'];
-                    $message_type = $mmb_message['message_type'];
+                    //$message = $mmb_message['message']; // APPS remove JSON and make string 05/08/22
+                    //$message_type = $mmb_message['message_type']; // APPS remove JSON and make string 05/08/22
+                    $message = $mmb_message;
+                    $message_type = "success";
 
 //                     delete_post_meta($order_id, '_mmb_gateway_message');
 

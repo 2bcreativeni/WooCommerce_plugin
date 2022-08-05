@@ -235,12 +235,15 @@ class MMB_Gateway_Request
             unset($data);
             $order_id = $order->get_id();
             if( $mmb_check_request_data->result !== 'success' ) {
-                
+                /*
                 $mmb_message = array(
                     'message' =>  __( 'Payment failed.', 'mmb-gateway-woocommerce' ).__( 'Order ID:', 'mmb-gateway-woocommerce' ) . $order->get_id() . '.'.__( 'Transaction ID:', 'mmb-gateway-woocommerce' ).  $merchantTxId,
                     'message_type' => 'error'
                 );
-                update_post_meta($order_id, '_mmb_gateway_message', $mmb_message);
+                */
+                //update_post_meta($order_id, '_mmb_gateway_message', $mmb_message); // APPS remove JSON and make string 05/08/22
+                $message = __( 'Payment failed.', 'mmb-gateway-woocommerce' ).__( 'Order ID:', 'mmb-gateway-woocommerce' ) . $order->get_id() . '.'.__( 'Transaction ID:', 'mmb-gateway-woocommerce' ).  $merchantTxId;
+                update_post_meta($order_id, '_mmb_gateway_message', $message);
                 header($_SERVER['SERVER_PROTOCOL'] . ' 200 OK', true, 200);
             }else{
                 
@@ -257,16 +260,21 @@ class MMB_Gateway_Request
                         'message' => $message,
                         'message_type' => $message_type
                     );
-                    update_post_meta($order_id, '_mmb_gateway_message', $mmb_message);
+                    //update_post_meta($order_id, '_mmb_gateway_message', $mmb_message); // APPS remove JSON and make string 05/08/22
+                    update_post_meta($order_id, '_mmb_gateway_message', $message);
                     // Redirect
                     wp_redirect( $order->get_checkout_order_received_url() );
                     exit;
                 }else{
+                  /*
                     $mmb_message = array(
                         'message' =>  __( 'Payment failed.', 'mmb-gateway-woocommerce' ).__( 'Order ID:', 'mmb-gateway-woocommerce' ) . $order->get_id() . '.'.__( 'Transaction ID:', 'mmb-gateway-woocommerce' ).  $merchantTxId,
                         'message_type' => 'error'
                     );
-                    update_post_meta($order_id, '_mmb_gateway_message', $mmb_message);
+                    */
+                    //update_post_meta($order_id, '_mmb_gateway_message', $mmb_message); APPS remove JSON and make string 05/08/22
+                    $message = __( 'Payment failed.', 'mmb-gateway-woocommerce' ).__( 'Order ID:', 'mmb-gateway-woocommerce' ) . $order->get_id() . '.'.__( 'Transaction ID:', 'mmb-gateway-woocommerce' ).  $merchantTxId;
+                    update_post_meta($order_id, '_mmb_gateway_message', $message);
                     header($_SERVER['SERVER_PROTOCOL'] . ' 200 OK', true, 200);
                 }
             }
@@ -304,11 +312,15 @@ class MMB_Gateway_Request
             if($order_status != 'failed'){
                 $order->update_status( 'failed', sprintf( __( 'Payment failed.', 'mmb-gateway-woocommerce' ) ) );
             }
+            /*
             $mmb_message = array(
                 'message' =>  __( 'Payment failed.', 'mmb-gateway-woocommerce' ).__( 'Order ID:', 'mmb-gateway-woocommerce' ) . $order->get_id() . '.'.__( 'Transaction ID:', 'mmb-gateway-woocommerce' ).  $merchantTxId,
                 'message_type' => 'error'
             );
-            update_post_meta($order_id, '_mmb_gateway_message', $mmb_message);
+            */
+            //update_post_meta($order_id, '_mmb_gateway_message', $mmb_message);
+            $message =  __( 'Payment failed.', 'mmb-gateway-woocommerce' ).__( 'Order ID:', 'mmb-gateway-woocommerce' ) . $order->get_id() . '.'.__( 'Transaction ID:', 'mmb-gateway-woocommerce' ).  $merchantTxId;
+            update_post_meta($order_id, '_mmb_gateway_message', $message);
             $order->save();
             header($_SERVER['SERVER_PROTOCOL'] . ' 200 OK', true, 200);
             return;
@@ -350,7 +362,8 @@ class MMB_Gateway_Request
                     if( function_exists('WC') ){
                         WC()->cart->empty_cart();
                     }
-                    update_post_meta($order_id, '_mmb_gateway_message', $mmb_message);
+                    //update_post_meta($order_id, '_mmb_gateway_message', $mmb_message);
+                    update_post_meta($order_id, '_mmb_gateway_message', $message);
                     //Do not handle these order status in the plugin system
                     header($_SERVER['SERVER_PROTOCOL'] . ' 200 OK', true, 200);
                     return;
@@ -359,11 +372,15 @@ class MMB_Gateway_Request
                 if($order_status != 'failed'){
                     $order->update_status( 'failed', sprintf( __( 'Payment failed.', 'mmb-gateway-woocommerce' ) ) );
                 }
+                /*
                 $mmb_message = array(
                     'message' =>  __( 'Payment failed.', 'mmb-gateway-woocommerce' ).__( 'Order ID:', 'mmb-gateway-woocommerce' ) . $order->get_id() . '.'.__( 'Transaction ID:', 'mmb-gateway-woocommerce' ).  $merchantTxId,
                     'message_type' => 'error'
                 );
-                update_post_meta($order_id, '_mmb_gateway_message', $mmb_message);
+                */
+                //update_post_meta($order_id, '_mmb_gateway_message', $mmb_message);
+                $message =  __( 'Payment failed.', 'mmb-gateway-woocommerce' ).__( 'Order ID:', 'mmb-gateway-woocommerce' ) . $order->get_id() . '.'.__( 'Transaction ID:', 'mmb-gateway-woocommerce' ).  $merchantTxId;
+                update_post_meta($order_id, '_mmb_gateway_message', $message);
                 $order->save();
                 header($_SERVER['SERVER_PROTOCOL'] . ' 200 OK', true, 200);
                 return;
@@ -382,11 +399,13 @@ class MMB_Gateway_Request
         $message = __('Thank you for shopping with us.<br />Your transaction was successful, payment was received.<br />Your order is currently being processed.', 'mmb-gateway-woocommerce');
         $message .= '<br />'.__( 'Order ID:', 'mmb-gateway-woocommerce' ).$order->get_id() . '. '.__( 'Transaction ID:', 'mmb-gateway-woocommerce' ) . $merchantTxId;
         $message_type = 'success';
+        
         $mmb_message = array(
             'message' => $message,
             'message_type' => $message_type
         );
-        update_post_meta($order_id, '_mmb_gateway_message', $mmb_message);
+        //update_post_meta($order_id, '_mmb_gateway_message', $mmb_message); // APPS remove JSON and make string 05/08/22
+        update_post_meta($order_id, '_mmb_gateway_message', $message);
         $order->save();
         header($_SERVER['SERVER_PROTOCOL'] . ' 200 OK', true, 200);
     }
